@@ -1,3 +1,6 @@
+import redis
+
+
 class Config():
     """配置信息"""
 
@@ -5,6 +8,7 @@ class Config():
 
     # 数据库连接
     SQLALCHEMY_DATABASE_URI = 'mysql://root:123456@10.112.214.168:3306/ihome'
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
 
     # redis
     REDIS_HOST = '10.112.214.168'
