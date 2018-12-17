@@ -1,8 +1,11 @@
 # -*- coding:utf-8 -*-
 
 from datetime import datetime
-from . import db
+
 from werkzeug.security import generate_password_hash, check_password_hash
+
+from . import db
+from ihome import constants
 
 
 class BaseModel(object):
