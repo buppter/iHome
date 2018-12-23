@@ -183,7 +183,7 @@ class House(BaseModel, db.Model):
 
         # 评论信息
         comments = []
-        orders = Order.query.filter(Order.house_id == self.id, Order.status == "COMPLETE", Order.comment != None)\
+        orders = Order.query.filter(Order.house_id == self.id, Order.status == "COMPLETE", Order.comment != None) \
             .order_by(Order.update_time.desc()).limit(constants.HOUSE_DETAIL_COMMENT_DISPLAY_COUNTS)
         for order in orders:
             comment = {
@@ -229,7 +229,7 @@ class Order(BaseModel, db.Model):
     house_price = db.Column(db.Integer, nullable=False)  # 房屋的单价
     amount = db.Column(db.Integer, nullable=False)  # 订单的总金额
     status = db.Column(  # 订单的状态
-        db.Enum(   # 枚举     # django choice
+        db.Enum(  # 枚举     # django choice
             "WAIT_ACCEPT",  # 待接单,
             "WAIT_PAYMENT",  # 待支付
             "PAID",  # 已支付
@@ -238,7 +238,7 @@ class Order(BaseModel, db.Model):
             "CANCELED",  # 已取消
             "REJECTED"  # 已拒单
         ),
-        default="WAIT_ACCEPT", index=True)    # 指明在mysql中这个字段建立索引，加快查询速度
+        default="WAIT_ACCEPT", index=True)  # 指明在mysql中这个字段建立索引，加快查询速度
     comment = db.Column(db.Text)  # 订单的评论信息或者拒单原因
     trade_no = db.Column(db.String(80))  # 交易的流水号 支付宝的
 
