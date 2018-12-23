@@ -62,10 +62,10 @@ function sendSMSCode() {
             var timer = setInterval(function () {
                 if (num > 1) {
                     //修改倒计时文本
-                    $(".phonecode-a").html(num + "秒")
+                    $(".phonecode-a").html(num + "秒");
                     num -= 1;
                 } else {
-                    $(".phonecode-a").html("获取验证码")
+                    $(".phonecode-a").html("获取验证码");
                     $(".phonecode-a").attr("onclick", "sendSMSCode();");
                     clearInterval(timer)
                 }
