@@ -157,5 +157,5 @@ def login():
     # 如果验证通过，保存登陆状态，在session中
     session['name'] = user.name
     session['mobile'] = user.mobile
-    session['user_id'] =  user.id
+    session['user_id'] = user.id
     return jsonify(errno=RET.OK, errmsg="登陆成功")
