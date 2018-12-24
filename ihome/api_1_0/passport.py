@@ -56,8 +56,6 @@ def register():
 
     # 判断用户填写的短信验证码的正确性
     if str(real_sms_code, encoding="utf-8") != sms_code:
-        print(real_sms_code)
-        print(sms_code)
         return jsonify(errno=RET.DATAERR, errmsg="短信验证码错误")
 
     # 判断用户的手机号是否已被注册
@@ -112,6 +110,7 @@ def login():
     """
     # 获取参数
     req_dict = request.get_json()
+    print(req_dict)
     mobile = req_dict.get("mobile")
     password = req_dict.get("password")
 
@@ -127,13 +126,16 @@ def login():
 
     # 判断错误次数是否超过限制，如果超过限制，则返回
     # redis记录： "access_nums_请求的IP": 次数
-    user_ip = request.remote_addr   # 用户的IP
+    user_ip = request.remote_addr  # 用户的IP
     try:
         access_nums = redis_store.get("access_nums_%s" % user_ip)
+        print(int(access_nums))
     except Exception as e:
         current_app.logger.error(e)
     else:
+        print(int(access_nums), type(access_nums))
         if access_nums is not None and int(access_nums) >= constants.LOGIN_ERROR_MAX_TIMES:
+            print(access_nums, int(access_nums))
             return jsonify(errno=RET.REQERR, errmsg="错误请求次数过多，请稍后重试")
 
     # 从数据库中根据手机号查询用户的数据对象
@@ -159,3 +161,23 @@ def login():
     session['mobile'] = user.mobile
     session['user_id'] = user.id
     return jsonify(errno=RET.OK, errmsg="登陆成功")
+
+
+@api.route("/session", methods=["GET"])
+def check_loign():
+    """检查登陆状态"""
+    # 尝试从session中获取用户的名字
+    name = session.get("name")
+    # 如果session中数据name名字存在，则表示用户已登陆，否则未登录
+    if name is not None:
+        return jsonify(errno=RET.OK, errmsg="True", data={"name": name})
+    else:
+        return jsonify(errno=RET.SESSIONERR, errmsg="False")
+
+
+@api.route("/session", methods=["DELETE"])
+def logout():
+    """登出"""
+    # 清除session中的数据
+    session.clear()
+    return jsonify(errno=RET.OK, errmsg="OK")
