@@ -1,3 +1,4 @@
+//js读取Cookie的方法
 function getCookie(name) {
     var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
     return r ? r[1] : undefined;
@@ -95,7 +96,10 @@ $(document).ready(function () {
     $("#password2").focus(function () {
         $("#password2-err").hide();
     });
+
+    //为表单的提交补充自定义的函数行为  （事件）
     $(".form-register").submit(function (e) {
+        //组织浏览器对于表单的默认自动提交行为
         e.preventDefault();
         mobile = $("#mobile").val();
         phoneCode = $("#phonecode").val();
@@ -121,5 +125,34 @@ $(document).ready(function () {
             $("#password2-err").show();
             return;
         }
+
+        //调用ajax向后端发送注册请求
+        var req_data = {
+            mobile: mobile,
+            sms_code: phoneCode,
+            password: passwd,
+            password2: passwd2,
+        };
+        var req_json = JSON.stringify(req_data);
+        $.ajax({
+            url: "/api/v1.0/users",
+            type: "post",
+            data: req_json,
+            contentType: "application/json",
+            headers:{
+                "X-CSRFToken": getCookie("csrf_token")
+            },//请求头，将csrf_token值放入请求中，方便后端进行CSRF验证
+
+            success: function (resp) {
+                if (resp.errno == "0"){
+                    //注册成功，跳转到主页
+                    location.href = "/index.html"
+                }else{
+                    alert(resp.errmsg);
+                }
+
+            }
+        })
+
     });
 })
