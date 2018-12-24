@@ -7,6 +7,12 @@ SMS_CODE_REDIS_EXPIRES = 300
 # 发送短信验证码间隔,单位 秒
 SEND_SMS_CODE_INTERVAL = 300
 
+# 登陆错误限制次数
+LOGIN_ERROR_MAX_TIMES = 10
+
+# 登陆错误限制时间, 单位秒
+LOGIN_ERROR_FORBID_TIME = 600
+
 
 
 # 云片网API_KEY
