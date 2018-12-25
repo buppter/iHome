@@ -129,13 +129,10 @@ def login():
     user_ip = request.remote_addr  # 用户的IP
     try:
         access_nums = redis_store.get("access_nums_%s" % user_ip)
-        print(int(access_nums))
     except Exception as e:
         current_app.logger.error(e)
     else:
-        print(int(access_nums), type(access_nums))
         if access_nums is not None and int(access_nums) >= constants.LOGIN_ERROR_MAX_TIMES:
-            print(access_nums, int(access_nums))
             return jsonify(errno=RET.REQERR, errmsg="错误请求次数过多，请稍后重试")
 
     # 从数据库中根据手机号查询用户的数据对象
@@ -150,7 +147,7 @@ def login():
         # 如果校验失败，记录错误次数，返回信息
         try:
             redis_store.incr("access_nums_%s" % user_ip)
-            redis_store.expire("access_nums_%s" % constants.LOGIN_ERROR_FORBID_TIME)
+            redis_store.expire("access_nums_%s" % user_ip, constants.LOGIN_ERROR_FORBID_TIME)
         except Exception as e:
             current_app.logger.error(e)
 
@@ -164,7 +161,7 @@ def login():
 
 
 @api.route("/session", methods=["GET"])
-def check_loign():
+def check_login():
     """检查登陆状态"""
     # 尝试从session中获取用户的名字
     name = session.get("name")

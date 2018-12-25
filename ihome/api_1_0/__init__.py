@@ -8,3 +8,4 @@ api = Blueprint("api_1_0", __name__)
 from . import demo
 from . import verify_code
 from . import passport
+from . import houses

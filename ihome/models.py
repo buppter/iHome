@@ -94,8 +94,8 @@ class Area(BaseModel, db.Model):
     def to_dict(self):
         """将对象转换为字典"""
         d = {
-            "aid": self.id,
-            "aname": self.name
+            "area_id": self.id,
+            "area_name": self.name
         }
         return d
 
