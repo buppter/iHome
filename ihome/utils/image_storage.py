@@ -22,6 +22,19 @@ def storage(file_data):
 
     ret, info = put_data(token, None, file_data)
 
-    print(info)
-    print("*"*10)
-    print(ret)
+    if info.status_code == 200:
+        # 表示上传成功,返回文件名
+        return ret.get("key")
+    else:
+        # 上传失败
+        return Exception("上传到七牛失败")
+
+    # print(info)
+    # print("*************************")
+    # print(ret)
+
+
+if __name__ == "__main__":
+    with open("./1.png", "rb") as f:
+        file_data = f.read()
+        storage(file_data)

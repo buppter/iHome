@@ -18,3 +18,6 @@ API_KEY = '9e2ca7e473cfa3cf36a078fed9f8dba7'
 
 # 城区area信息缓存时间，单位秒
 AREA_INFO_REDIS_CACHE_EXPIRES = 7200
+
+# 七牛云域名
+QINIU_URL_DOMAIN = 'http://pkak24rp9.bkt.clouddn.com/'

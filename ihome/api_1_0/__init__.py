@@ -9,3 +9,4 @@ from . import demo
 from . import verify_code
 from . import passport
 from . import houses
+from . import profile
